@@ -1,10 +1,10 @@
 import streamlit as st
 from dotenv import load_dotenv
 
-from config import RECORDINGS_DIR, RECORDING_PATH, OUTPUT_PATH
-from stt import load_whisper_model, transcribe
-from llm import load_claude_client, ask_claude
-from tts import synthesize
+from src.config import RECORDINGS_DIR, RECORDING_PATH, OUTPUT_PATH
+from src.stt import load_whisper_model, transcribe
+from src.llm import load_claude_client, ask_claude
+from src.tts import synthesize
 
 load_dotenv()
 

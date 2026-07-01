@@ -2,7 +2,7 @@ from pathlib import Path
 
 TTS_MODEL = "en_US-lessac-medium"
 WHISPER_MODEL_SIZE = "base"
-CLAUDE_MODEL = "claude-sonnet-5"
+CLAUDE_MODEL = "claude-sonnet-4-6"
 
 RECORDINGS_DIR = Path("audio_recordings")
 OUTPUT_DIR = Path("audio_output")

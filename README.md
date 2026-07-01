@@ -8,12 +8,12 @@ Built as a hands-on exploration of voice AI pipelines: how STT, LLM reasoning, a
 
 ## ✨ Features
 
-- 🎤 **Voice or text input** — record your voice or just type, both work in the same chat box
-- 🧠 **Conversational memory** — the assistant remembers earlier turns in the session
-- 🔒 **Local-first pipeline** — speech-to-text and text-to-speech run entirely on your machine, no per-minute API costs
-- ⚡ **Fast, modern LLM brain** — powered by Anthropic's Claude
-- 💬 **Clean chat UI** — built with Streamlit, pinned input box, auto-playing spoken replies
-- 🧩 **Modular architecture** — STT, LLM, and TTS are independent, swappable modules
+- 🎤 **Voice or text input**: record your voice or just type, both work in the same chat box
+- 🧠 **Conversational memory**: the assistant remembers earlier turns in the session
+- 🔒 **Local-first pipeline**: speech-to-text and text-to-speech run entirely on your machine, with no per-minute API costs
+- ⚡ **Fast, modern LLM brain** powered by Anthropic's Claude
+- 💬 **Clean chat UI** built with Streamlit, with a pinned input box and auto-playing spoken replies
+- 🧩 **Modular architecture**: STT, LLM, and TTS live in independent, swappable modules under `src/`
 
 ---
 
@@ -41,7 +41,7 @@ flowchart LR
 
 ## 🛠️ Tech Stack
 
-- **Language:** Python 3.11+
+- **Language:** Python 3.14+
 - **Package manager:** [`uv`](https://docs.astral.sh/uv/)
 - **STT:** faster-whisper (local Whisper implementation)
 - **LLM:** Anthropic Claude (`anthropic` SDK)
@@ -52,19 +52,24 @@ flowchart LR
 ---
 
 ## 📁 Project Structure
+
+```
 voice-assistant/
-├── app.py              # Streamlit UI — orchestrates the pipeline
-├── main.py             # CLI version (terminal-based, for testing)
-├── config.py            # Shared constants and file paths
-├── stt.py                # Speech-to-text logic (faster-whisper)
-├── llm.py                # LLM logic (Claude API)
-├── tts.py                # Text-to-speech logic (Piper)
-├── audio_recordings/    # Saved voice input (gitignored)
-├── audio_output/        # Generated speech output (gitignored)
-├── .env                  # Your API key (gitignored, never commit this)
-├── .env.example          # Template for required environment variables
+├── app.py                  # Streamlit UI, orchestrates the pipeline
+├── main.py                 # CLI version (terminal-based, for quick testing)
+├── src/
+│   ├── config.py           # Shared constants and file paths
+│   ├── stt.py               # Speech-to-text logic (faster-whisper)
+│   ├── llm.py               # LLM logic (Claude API)
+│   └── tts.py               # Text-to-speech logic (Piper)
+├── tests/                  # Unit tests for the src modules
+├── audio_recordings/       # Saved voice input (gitignored)
+├── audio_output/           # Generated speech output (gitignored)
+├── .env                     # Your API key (gitignored, never commit this)
+├── .env.example             # Template for required environment variables
 ├── .gitignore
-└── pyproject.toml        # Managed by uv
+└── pyproject.toml           # Managed by uv
+```
 
 ---
 
@@ -72,7 +77,7 @@ voice-assistant/
 
 ### Prerequisites
 
-- Python 3.11 or higher
+- Python 3.14 or higher
 - [`uv`](https://docs.astral.sh/uv/getting-started/installation/) installed
 - An [Anthropic API key](https://console.anthropic.com/)
 - A working microphone (for voice input)
@@ -99,8 +104,11 @@ Copy the example file and add your key:
 cp .env.example .env
 ```
 
-Edit `.env`: 
+Then edit `.env` and set:
+
+```
 ANTHROPIC_API_KEY=your-actual-key-here
+```
 
 ### 4. Download the Piper voice model
 
@@ -126,7 +134,7 @@ uv run python main.py
 ## 🎯 Usage
 
 1. Open the app in your browser.
-2. Either **type a message** in the chat box, or click the **mic icon** to record your voice.
+2. Either type a message in the chat box, or click the mic icon to record your voice.
 3. Your speech is transcribed locally with faster-whisper.
 4. Claude generates a response, with full memory of the conversation so far.
 5. The response is spoken back to you via Piper, and also shown as text.
@@ -135,42 +143,41 @@ uv run python main.py
 
 ## ⚙️ Configuration
 
-All tunable settings live in `config.py`:
+All tunable settings live in `src/config.py`:
 
 | Variable | Default | Description |
 |---|---|---|
-| `WHISPER_MODEL_SIZE` | `"base"` | Whisper model size (`tiny`, `base`, `small`, `medium`, `large`) — bigger = more accurate, slower |
+| `WHISPER_MODEL_SIZE` | `"base"` | Whisper model size (`tiny`, `base`, `small`, `medium`, `large`). Bigger means more accurate but slower. |
 | `TTS_MODEL` | `"en_US-lessac-medium"` | Piper voice model |
-| `CLAUDE_MODEL` | `"claude-sonnet-5"` | Anthropic model used for reasoning |
+| `CLAUDE_MODEL` | `"claude-sonnet-4-6"` | Anthropic model used for reasoning |
 
 ---
 
 ## 🩹 Troubleshooting
 
 **`piper-download: program not found`**
-Piper's voice downloader is a Python module, not a standalone binary:
+Piper's voice downloader is a Python module, not a standalone binary. Run it with:
 ```bash
 uv run python -m piper.download_voices en_US-lessac-medium
 ```
 
 **`AttributeError: 'ThinkingBlock' object has no attribute 'text'`**
-Claude's response can include a reasoning block before the answer. Always filter by `block.type == "text"` rather than assuming `response.content[0]` is the answer (already handled in `llm.py`).
+Claude's response can include a reasoning block before the answer. Always filter by `block.type == "text"` rather than assuming `response.content[0]` is the answer. This is already handled in `src/llm.py`.
 
 **Windows symlink warning from Hugging Face**
-Harmless — Windows blocks symlinks unless Developer Mode is enabled. faster-whisper falls back to copying files instead; no functional impact.
+This is harmless. Windows blocks symlinks unless Developer Mode is enabled, so faster-whisper falls back to copying files instead. There's no functional impact.
 
 ---
 
 ## 🗺️ Roadmap
 
 - [ ] Voice-activity detection (auto-stop recording on silence, instead of a fixed max duration)
-- [ ] Streaming responses (reduce perceived latency)
+- [ ] Streaming responses to reduce perceived latency
 - [ ] Deploy to a cloud host for shareable demo links
 - [ ] Multi-language support
 
-
 ## 👤 Author
 
-Built by [Asam](https://github.com/saimikram84) — AI/ML Engineer.
+Built by [Asam](https://github.com/saimikram84), AI/ML Engineer.
 
 If you found this useful, consider giving the repo a ⭐.

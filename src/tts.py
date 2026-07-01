@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from config import TTS_MODEL, OUTPUT_DIR
+from .config import TTS_MODEL, OUTPUT_DIR
 
 
 def synthesize(text: str, output_path: Path) -> tuple[bool, str]:

@@ -1,7 +1,7 @@
 from pathlib import Path
 from faster_whisper import WhisperModel
 
-from config import WHISPER_MODEL_SIZE
+from .config import WHISPER_MODEL_SIZE
 
 
 def load_whisper_model() -> WhisperModel:

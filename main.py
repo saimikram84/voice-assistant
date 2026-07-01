@@ -56,7 +56,7 @@ def ask_claude(prompt: str) -> str:
     conversation_history.append({"role": "user", "content": prompt})
 
     response = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-4-6",
         max_tokens=200,
         messages=conversation_history,
     )

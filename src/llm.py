@@ -1,7 +1,7 @@
 import os
 from anthropic import Anthropic
 
-from config import CLAUDE_MODEL
+from .config import CLAUDE_MODEL
 
 
 def load_claude_client() -> Anthropic:
