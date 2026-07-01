@@ -1,0 +1,16 @@
+[project]
+name = "voice-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "anthropic>=0.115.0",
+    "faster-whisper>=1.2.1",
+    "numpy>=2.5.0",
+    "piper-tts>=1.4.2",
+    "python-dotenv>=1.2.2",
+    "sounddevice>=0.5.5",
+    "soundfile>=0.14.0",
+    "streamlit>=1.58.0",
+]

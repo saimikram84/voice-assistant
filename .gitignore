@@ -1,0 +1,52 @@
+# Environment variables (NEVER commit these)
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# uv
+.uv/
+uv.lock.bak
+
+# Audio files generated/recorded at runtime
+audio_recordings/
+audio_output/
+*.wav
+*.mp3
+
+# Piper voice models (large binary files, downloaded via setup step, not committed)
+*.onnx
+*.onnx.json
+
+# Whisper / Hugging Face model cache (if it ever gets created locally in-project)
+.cache/
+models/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
